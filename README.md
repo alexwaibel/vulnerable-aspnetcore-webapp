@@ -12,7 +12,7 @@ To run the application, follow the below instructions.
 ### Running Application
 - Clone this repo and cd into the root directory
     ```bash
-    cd vulnerable-aspnetcore-app
+    cd vulnerable-aspnetcore-webapp
     ```
 - Start the application
     ```bash
