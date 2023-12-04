@@ -1,18 +1,55 @@
 ﻿@page
 @model DirectoryTraversalModel
 @{
-    ViewData["Title"] = "Directory Traversal";
+ViewData["Title"] = "Directory Traversal";
 }
 <h1>@ViewData["Title"]</h1>
 
-<h3>Introduction</h3>
-<p>Learn about <a target="_blank" rel="noopener noreferrer" href="https://portswigger.net/web-security/file-path-traversal">directory traversal from PortSwigger</a>.</p>
-<p>Security considerations when serving static files in .NET <a target="_blank" rel="noopener noreferrer" href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/static-files?view=aspnetcore-8.0#security-considerations-for-static-files">can be found here</a>.</p>
+<div>
+    <h3>Introduction</h3>
+    <p>Directory traversal (aka path traversal) attacks occur when improperly validated user input is used to construct
+        a file path. This can enable an attacker to access arbitrary files on the host.</p>
+    <ul>
+        <li>Learn more about <a target="_blank" rel="noopener noreferrer"
+                href="https://portswigger.net/web-security/file-path-traversal">directory traversal from
+                PortSwigger</a>.</li>
+        <li>Security considerations when serving static files in .NET <a target="_blank" rel="noopener noreferrer"
+                href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/static-files?view=aspnetcore-8.0#security-considerations-for-static-files">can
+                be found here</a>.</li>
+    </ul>
+</div>
 
-<h3>.NET Examples</h3>
+<div>
+    <h3>.NET Examples</h3>
 
-<p>The below image is not vulnerable.</p>
-<img src="~/images/protected.jpg" class="img" alt="Protective equipment" />
+    <h4>Secure Example</h4>
+    <div>
+        <p>The below image is not vulnerable. It uses the <a target="_blank" rel="noopener noreferrer"
+                href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.staticfileextensions.usestaticfiles">UseStaticFiles</a>
+            method in <kbd>Program.cs</kbd> to enable static files to be served from the web root and accesses these
+            files with a relative path.</p>
+        <img src="~/images/protected.jpg" class="img" alt="Protective equipment" />
+    </div>
 
-<p>However, this image is vulnerable.</p>
-<img src="@Model.DangerousFileContent" class="img" alt="Danger sign" />
+    <h4>Insecure Examples</h4>
+    <div>
+        <p>However, the below image is vulnerable. The filename it uses can be overriden by providing the
+            <code>FileName</code> query parameter. This parameter is then used blindly to construct the file path with
+            <a target="_blank" rel="noopener noreferrer"
+                href="https://learn.microsoft.com/en-us/dotnet/api/system.io.path.combine?view=net-8.0">Path.Combine</a>
+            which is a common source of directory traversal vulnerabilities.
+            This example also highlights the danger of using <a target="_blank" rel="noopener noreferrer"
+                href="https://learn.microsoft.com/en-us/aspnet/core/mvc/models/model-binding?view=aspnetcore-8.0#model-binding-for-http-get-requests">model
+                binding</a> on <kbd>GET</kbd> requests, as these become
+            another vector for user input.
+        </p>
+        <p>This can be exploited to access arbitrary files. For example you can request <a asp-area=""
+                asp-page="/DirectoryTraversal"
+                asp-route-FilePath="../../.gitignore">/DirectoryTraversal?FilePath=../../.gitignore</a>. In the
+            response, grab the below <code>img</code> element's <code>src</code> value. Remove the
+            <code>data:image/png;base64,</code> prefix and base64 decode the remaining string and you should see this
+            repo's <kbd>.gitignore</kbd> file.
+        </p>
+        <img src="@Model.DangerousFileContent" class="img" alt="Danger sign" />
+    </div>
+</div>
