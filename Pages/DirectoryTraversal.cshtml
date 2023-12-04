@@ -5,4 +5,14 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Example of directory traversal.</p>
+<h3>Introduction</h3>
+<p>Learn about <a target="_blank" rel="noopener noreferrer" href="https://portswigger.net/web-security/file-path-traversal">directory traversal from PortSwigger</a>.</p>
+<p>Security considerations when serving static files in .NET <a target="_blank" rel="noopener noreferrer" href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/static-files?view=aspnetcore-8.0#security-considerations-for-static-files">can be found here</a>.</p>
+
+<h3>.NET Examples</h3>
+
+<p>The below image is not vulnerable.</p>
+<img src="~/images/protected.jpg" class="img" alt="Protective equipment" />
+
+<p>However, this image is vulnerable.</p>
+<img src="@Model.DangerousFileContent" class="img" alt="Danger sign" />
