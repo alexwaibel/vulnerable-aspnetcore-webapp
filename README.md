@@ -3,6 +3,8 @@
 ## About
 This is an intentionally vulnerable webapp written in .NET Core. It is intended to provide code examples using .NET Core to go alongside the [Portswigger Web Academy](https://portswigger.net/web-security/dashboard). This is primarily done as a learning exercise for myself but I am happy to accept community discussion and contributions.
 
+WARNING: This web app is intentionally riddled with vulnerabilities. DO NOT upload it to a host facing the public internet. For best results, run this in a virtual machine
+
 ## Getting Started
 To run the application, follow the below instructions.
 
