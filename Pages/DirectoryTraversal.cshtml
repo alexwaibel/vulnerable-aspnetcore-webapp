@@ -88,14 +88,22 @@ ViewData["Title"] = "Directory Traversal";
         <img src="~/images/hardhat.jpg" class="rounded mx-auto d-block" alt="Protective equipment" />
     </div>
     <div>
-        <p>The below image is not vulnerable. Although it uses the AllowlistedFileNameInput parameter, the filename
-            input is checked against a list of permitted inputs. For example you can request <a asp-area=""
-                asp-page="/DirectoryTraversal"
+        <p>The below image is not vulnerable. Although it uses the <code>AllowlistedFileNameInput</code> parameter to
+            look up the image, the filename input is checked against a list of permitted inputs. For example you can
+            request <a asp-area="" asp-page="/DirectoryTraversal"
                 asp-route-AllowlistedFileNameInput="danger.jpg">/DirectoryTraversal?AllowlistedFileNameInput=danger.jpg</a>
             but <a asp-area="" asp-page="/DirectoryTraversal"
                 asp-route-AllowlistedFileNameInput="../../.gitignore">/DirectoryTraversal?AllowlistedFileNameInput=../../.gitignore</a>
             won't work.
         </p>
         <img src="@Model.AllowlistedFileContent" class="rounded mx-auto d-block" alt="Protective equipment" />
+    </div>
+    <div>
+        <p>The below image is not vulnerable to most attacks, but clever inputs may still be able to slip through the
+            validation. It uses the <code>ValidatedFileNameInput</code> parameter to look up the image. Some simple
+            validation is done using .NET filesystem APIs to try to remove path characters and check that the path and
+            extension are as expected.
+        </p>
+        <img src="@Model.ValidatedFileContent" class="rounded mx-auto d-block" alt="Protective equipment" />
     </div>
 </div>
