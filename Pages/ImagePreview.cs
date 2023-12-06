@@ -1,45 +1,48 @@
-﻿using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace vulnerableaspnetcoreapp.Pages;
 
-public class DirectoryTraversalModel : PageModel
+public class ImagePreviewModel : PageModel
 {
-    private readonly ILogger<DirectoryTraversalModel> _logger;
-    public string? DangerousFileContent { get; private set; }
+    private readonly ILogger<ImagePreviewModel> _logger;
+    public string? Source { get; set; }
     [BindProperty(SupportsGet = true)]
-    public string DangerousFileNameInput { get; set; }
+    public string? UnvalidatedFileName { get; set; }
     [BindProperty(SupportsGet = true)]
-    public string AllowlistedFileNameInput { get; set; }
-    public string? AllowlistedFileContent { get; private set; }
+    public string? AllowlistedFileName { get; set; }
     [BindProperty(SupportsGet = true)]
-    public string ValidatedFileNameInput { get; set; }
-    public string? ValidatedFileContent { get; private set; }
+    public string? FileName { get; set; }
 
-    public DirectoryTraversalModel(ILogger<DirectoryTraversalModel> logger)
+    public ImagePreviewModel(ILogger<ImagePreviewModel> logger)
     {
         _logger = logger;
-        DangerousFileNameInput = "danger.jpg";
-        AllowlistedFileNameInput = "hardhat.jpg";
-        ValidatedFileNameInput = "hardhat.jpg";
     }
 
     public void OnGet()
     {
-        DangerousFileContent = DangerouslyFetchDataURLFromFilename(DangerousFileNameInput);
-        AllowlistedFileContent = FetchAllowlistedDataURLFromFileName(AllowlistedFileNameInput);
-        ValidatedFileContent = FetchValidatedDataURLFromFileName(ValidatedFileNameInput);
+        if (UnvalidatedFileName != null)
+        {
+            Source = DangerouslyFetchDataURLFromFilename(UnvalidatedFileName);
+        }
+        else if (AllowlistedFileName != null)
+        {
+            Source = FetchAllowlistedDataURLFromFileName(AllowlistedFileName);
+        }
+        else if (FileName != null)
+        {
+            Source = FetchValidatedDataURLFromFileName(FileName);
+        }
     }
 
-    private string DangerouslyFetchDataURLFromFilename(string filename)
+    private string DangerouslyFetchDataURLFromFilename(string fileName)
     {
-        return FetchImageDataURLFromPath(Path.Combine([System.IO.Directory.GetCurrentDirectory(), "wwwroot", "images", DangerousFileNameInput]));
+        return FetchImageDataURLFromPath(Path.Combine([System.IO.Directory.GetCurrentDirectory(), "wwwroot", "images", fileName]));
     }
 
     private string FetchAllowlistedDataURLFromFileName(string fileName)
     {
-        string[] allowedFiles = ["danger.jpg", "hardhat.jpg"];
+        string[] allowedFiles = ["hardhat.jpg"];
         return allowedFiles.Contains(fileName) ? FetchImageDataURLFromPath(Path.Combine([System.IO.Directory.GetCurrentDirectory(), "wwwroot", "images", fileName])) : "";
     }
 
@@ -59,4 +62,6 @@ public class DirectoryTraversalModel : PageModel
         return string.Format("data:image/png;base64,{0}", base64EncodedData);
     }
 }
+
+
 

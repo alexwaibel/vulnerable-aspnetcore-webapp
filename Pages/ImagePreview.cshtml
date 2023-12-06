@@ -1,0 +1,12 @@
+﻿@page
+@model ImagePreviewModel
+@{
+ViewData["Title"] = "Image Preview";
+}
+<h1>@ViewData["Title"]</h1>
+
+@if(@Model.Source != null) {
+<img src="@Model.Source" class="img-fluid" alt="Protective equipment" />
+}
+
+<img src="~/images/hardhat.jpg" class="img-fluid" alt="Protective equipment" />
