@@ -1,5 +1,7 @@
 # Vulnerable .NET Core Webapp
 
+ARCHIVED: See my VulnerableBlazorApp repo where I've continued this project using blazor
+
 ## About
 This is an intentionally vulnerable webapp written in .NET. It is intended to provide code examples using .NET to go alongside the [PortSwigger Web Academy](https://portswigger.net/web-security/dashboard). See [the wiki](https://github.com/alexwaibel/vulnerable-aspnetcore-webapp/wiki) for a write-up.
 
